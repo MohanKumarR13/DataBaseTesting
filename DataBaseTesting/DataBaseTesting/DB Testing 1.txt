@@ -1,0 +1,24 @@
+Overview
+------------
+Database -Storage Area
+SQL
+
+Front End -UI
+Backend Testing-API
+
+
+DB Test--1.White Box testing and balckbox testing
+1.White box testing(Structural)
+Schema Testing
+Table,Table Columns,Views,Stored Procedures,Functons,Triggers
+
+2.Black Box Testing(Architectural)
+Functional Testing
+DML Operations(w r t)
+GUI Application
+Data Mapping
+Data Integrity
+
+Non Functional Testing
+Performance Testing -Load and Stress
+Security Testing

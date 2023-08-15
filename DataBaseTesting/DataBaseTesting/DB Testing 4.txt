@@ -1,0 +1,86 @@
+Store Procedure
+----------------
+It's a block of sql statements
+Reuse Multiple times
+
+use classicmodels
+select * from customers
+------------Method1------------
+DELIMITER $$
+create procedure SelectAllCustomer()
+begin
+select * from customers;
+End $$
+DELIMITER ; 
+call SelectAllCustomers();
+
+--------Method2------------
+DELIMITER $$
+create procedure SelectAllCustomerByCity(IN mycity varchar(50))
+begin
+select * from customers where city=mycity;
+End $$
+DELIMITER ; 
+call SelectAllCustomerByCity('Singapore');
+---------Method3----------
+DELIMITER $$
+create procedure SelectAllCustomerByCityAndPin(IN mycity varchar(50),IN pincode varchar (15))
+begin
+select * from customers where city=mycity and postalcode=pincode;
+End $$
+DELIMITER ; 
+call SelectAllCustomerByCityAndPin('Singapore','079903');
+---------------Method4--------------------------------------------------
+select * from orders
+DELIMITER $$
+create procedure GetOrderByCustomer(IN customerno int,OUT shipped int,out cancelled Int,out resolved int,out disputed int)
+begin
+select count(*)into shipped from orders where customerNumber=customerno and status='Shipped';
+select count(*)into cancelled from orders where customerNumber=customerno and status='Canceled';
+select count(*)into resolved from orders where customerNumber=customerno and status='Resolved';
+select count(*)into disputed from orders where customerNumber=customerno and status='Disputed';
+End $$
+DELIMITER ; 
+call GetOrderByCustomer(141,@shipped,@cancelled,@resolved,@disputed);
+select @shipped,@cancelled,@resolved,@disputed;
+----------------------------------------------------Method5--------------------------------------------------
+DELIMITER $$
+create procedure GetCustomerShipping(IN pcustomerno int,OUT pshipping  varchar(50))
+begin
+declare customercountry varchar(100);
+select country into customercountry from customers where customerNumber=pcustomerno;
+case customercountry
+when 'USA' Then
+SET pshipping='2-day Shipping';
+WHEN 'Canada' Then
+SET pshipping='3-day Shipping';
+ELSE
+SET pshipping='5-day Shipping';
+END CASE;
+End $$
+DELIMITER ; 
+call GetCustomerShipping(353,@shipping);
+select @shipping;
+----------------------------------------------Method6------------------------------------------------------------
+
+select * from supplierproducts;
+
+create table supplierproducts (supplerId int(3) ,productId int(3));
+insert into supplierproducts values(1,1);
+
+DELIMITER $$
+create procedure InsertSupplierProduct(IN inSupplierId Int,IN InproductId INT)
+BEGIN
+Declare exit handler for 1062 select 'Duplidate keys error encountered' Message;
+Declare exit handler for SQLEXCEPTION select 'SQLException encountered' Message;
+Declare exit handler for SQLSTATE '23000'select 'SQLSTATE 23000' ErrorCode;
+INSERT INTO supplierproducts(supplerId,productId) values (inSupplierId,InproductId);
+select count(*) from supplierproducts where supplierId= inSupplierId;
+END $$
+DELIMITER ;
+
+call InsertSupplierProduct(3,4);
+call InsertSupplierProduct(3,4);
+
+
+

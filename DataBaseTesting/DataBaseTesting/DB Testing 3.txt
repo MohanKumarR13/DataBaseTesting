@@ -1,0 +1,21 @@
+Test Cases
+----------
+Check table presence in db schema
+Check table name conventions
+Check Number of columns in a table
+Check Column name in a table
+Check data type of columns in a table
+Check size of the columns in a table
+Check nulls field in a table
+Check column key in a table
+-------------------------------------------------------------------
+describe information_schema.columns
+use classicmodels
+show tables
+select count(*) AS NumberOfColumns FROM information_schema.columns where table_name='customers'
+select column_name FROM information_schema.columns where table_name='customers'
+select column_name,data_type FROM information_schema.columns where table_name='customers'
+select column_name,column_type FROM information_schema.columns where table_name='customers'
+select column_name,is_nullable FROM information_schema.columns where table_name='customers'
+select column_name,column_key FROM information_schema.columns where table_name='customers'
+

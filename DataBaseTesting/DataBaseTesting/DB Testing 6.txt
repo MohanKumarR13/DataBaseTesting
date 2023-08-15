@@ -1,0 +1,43 @@
+Stored Functions
+----------------
+
+Delimiter $
+create function customerlevel(credit decimal(10,2)) returns varchar(20)
+deterministic
+begin
+declare customerlevel varchar(20);
+if credit>5000 then
+set customerlevel='platinum';
+elseif (credit >=10000 and credit <=50000)then
+set customerlevel='gold';
+elseif credit <10000 then
+set customerlevel='silver';
+end if;
+return customerlevel;
+end $
+delimiter $;
+
+show function status where db='classicmodels'
+
+select customername from customers
+select * from customers
+select customerlevel(creditlimit) from customers
+select customername,customerlevel(creditlimit) from customers
+-----------------------------------------------------------------------------------------
+Delimiter $
+create procedure getcustomerlevel(in customerno int,out customerlevel varchar(20))
+
+begin
+declare credit dec(10,2) default 0;
+select
+creditlimit
+into credit
+from customers
+where
+customerNumber=customerNo;
+set customerlevel=customerlevel(credit);
+end $
+delimiter $;
+
+call getcustomerlevel(131,@customerlevel);
+select @customerlevel

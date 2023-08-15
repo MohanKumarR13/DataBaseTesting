@@ -1,0 +1,19 @@
+use classicmodels;
+show procedure status where db='classicmodels'
+show procedure status where name='SelectAllCustomers'
+call SelectAllCustomers();
+select * from customers;
+call selectallcustomersbycity('Singapore');
+select * from customers where city='singapore';
+call getorderbycustomer(141,@shipped,@cancelled,@resolved,@disputed)
+select @shipped,@cancelled,@resolved,@disputed
+
+call getcustomershipping(141,@shipping);
+select @shipping as shippingtime
+
+select country,
+case 
+when country='USA' Then'2-day Shipping'
+WHEN 'Canada' Then'3-day Shipping'
+ELSE '5-day Shipping'
+END AS ShippingTime from customers where customernumber=112;

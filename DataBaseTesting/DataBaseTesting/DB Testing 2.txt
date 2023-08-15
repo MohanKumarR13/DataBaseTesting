@@ -1,0 +1,5 @@
+Environment Setup
+------------------
+Download and Install MySQL
+Download ClassicModels DB Schema---https://www.mysqltutorial.org/mysql-sample-database.aspx
+Extract and Import the Data in MySQL
